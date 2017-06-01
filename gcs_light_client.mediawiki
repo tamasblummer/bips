@@ -901,9 +901,9 @@ discussions.
 
 Light client: [https://github.com/lightninglabs/neutrino]
 
-Full-node indexing: TODO(roasbeef): post
+Full-node indexing: https://github.com/Roasbeef/btcd/tree/segwit-cbf
 
-Golomb-Rice Coded sets: TODO(roasbeef): post
+Golomb-Rice Coded sets: https://github.com/Roasbeef/btcutil/tree/gcs/gcs
 
 == Appendix A ==
 
