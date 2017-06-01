@@ -891,8 +891,9 @@ block 1 (assume you generate your own filters/headers for the genesis block).
 
 We would like to thank bfd (from the bitcoin-dev mailing list) for bringing the
 basis of this BIP to our attention, Greg Maxwell for pointing us in the
-direction of Golomb-Rice coding, and Joseph Poon for suggesting the filter
-header chain scheme.
+direction of Golomb-Rice coding, Joseph Poon for suggesting the filter
+header chain scheme, and Pedro Martelletto for writing the initial indexing
+code for <code>btcd</code>.
 
 We would also like to thank Dave Collins, JJ Jeffrey, Eric Lombrozo for useful
 discussions.
