@@ -3,7 +3,7 @@ BIP: ???
 Layer: Peer Services
 Title: Compact Client Side Filtering for Light Clients
 Author: Olaoluwa Osuntokun <laolu32@gmail.com>
-        Alex Aakselrod <alex@akselrod.org>
+        Alex Akselrod <alex@akselrod.org>
 Comments: ???
 Comments-URI: ???
 Type: Standards Track
