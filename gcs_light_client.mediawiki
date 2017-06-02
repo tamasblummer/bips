@@ -85,14 +85,14 @@ usage of basic public key templates.
 Finally, full-nodes only need to construct filters ''once'' as they're
 deterministically generated for each block. Once the index is built, no further
 active processing is required to serve light clients. Servicing light clients
-simply entails reading code-computed filters and headers from disk and sending
+simply entails reading pre-computed filters and headers from disk and sending
 them over the network.
 
 
 == Preliminaries ==
 
 Before we specify the details of our proposal. we'll first go over a few
-codeliminaries which will aide in the understanding our proposal.
+preliminaries which will aide in the understanding our proposal.
 
 By <code>[]byte</code> we refer to a slice (or array) of bytes. This value is
 typically expressed in C-like languages as an array of uint_8's.
@@ -108,7 +108,7 @@ pseudo-random function with <code>k</code> as the 128-bit key, and <code>n</code
 as the input to the PRF. We instantiate with the recommended parameters of
 <code>c = 2</code> and <code>d = 4</code> 
 
-We defined the concept of an abstract bit steam instantiated by the function:
+We define the concept of an abstract bit stream instantiated by the function:
 <code>new_bit_stream</code> The <code>bit_stream</code> has two functions that
 operate on it, <code>unary_encode(stream, n)</code> and
 <code>write_bits_big_endian(stream, n, k)</code> where <code>unary_encode(steam,
@@ -144,13 +144,13 @@ Run-Length Encoding (or RLE) is typically used in the video/image processing
 space to losslessly compresses images, or video frames. RLE works by ''omitting''
 the encoding of ''repeated'' values in a data stream. This achieves lossless
 compression as repeated items simply aren't transmitted. Instead, a value which
-recodesents the ''number of times'' a value repeats is transmitted.
+represents the ''number of times'' a value repeats is transmitted.
 
 Typically RLE takes the form of encoding repeated values in a ''binary'' stream.
 A simple RLE scheme works as follows:
 * Encode the run length (number of occurrences) of 0's using <code>k</code> bits.
 ** <code>k</code> acts as fixed length encoding for the length of a run.
-** This value acts as the maxmium encoable run-legnth.
+** This value acts as the maximum encodable run-length.
 * Transmission of runs of 1's is omitted.
 * Two 1's in a row are denoted by a zero-length run of zero.
 
@@ -180,10 +180,10 @@ However, in our case due to the hashing of items within the compact filter,
 we'll be dealing with items that are ''uniformly distributed''. We can use this
 fact to leverage a more efficient encoding scheme based on the distribution of
 the length of a run. The [Geometric Distribution](link)
-recodesents the probabilities of a number of failures before the first success
+represents the probabilities of a number of failures before the first success
 in a series of Bernoulli trials (yes/no experiments). If our values are i.i.d
 (independent, identically distributed) distributed of the run-length <code>r</code> can be
-recodesented as [6]:
+represented as [6]:
 <pre>
 P(r = n) = P^n * (1-p)
 </pre>
@@ -322,7 +322,7 @@ values are then sorted.
 ==== Set Compression ====
 
 Once the set of hashed items has been constructed (and sorted). We then use
-Golomb-Rice coding to ''compresses'' the set by encoding the ''delta'' value
+Golomb-Rice coding to ''compress'' the set by encoding the ''delta'' value
 between each successive element within the set. As these values are uniformly
 distributed, the deltas between these values will be Geometrically Distributed,
 meaning that Golomb-Rice coding will be optimal for this use-case [6].
@@ -337,7 +337,7 @@ gcs_compress(sorted_set, fp) -> []byte:
 
     let last_value = 0
     for value in sorted_set:
-        // Compute the difference btween this value and the last value modulo
+        // Compute the difference between this value and the last value modulo
         // P.
         let remainder = (value - last_value) % P
 
@@ -372,7 +372,7 @@ Decompression of a set, follows the reverse procedure of encoding. To decode an
 element, we'll decode the encoded quotient and remainder of encoded delta.
 With the full delta re-constructed, we then ''add'' this value to the prior
 value in order to reconstruct the full value. Following this procedure we can
-incrementally decompresses the set lazily without decompressing the entire
+incrementally decompress the set lazily without decompressing the entire
 filter.
 
 ===== Querying for a Single Item =====
@@ -390,7 +390,7 @@ gcs_match(key: [32]byte, compressed_set: []byte, target: []byte, fp, N: int) -> 
     let last_value = 0
 
     // As the values in the set are sorted once the decoded values exceeds the
-    value we wish to query for, we can terminate our search early.
+    // value we wish to query for, we can terminate our search early.
     for last_value < item:
         // Read the delta between this value and the next value which has been
         // encoded using Golomb-Rice codes.
@@ -418,7 +418,7 @@ sorted lists: the step-by-step decompressed values of the set, and the list of
 items we'd like to query.
 
 The following routine will evaluate to `true` if ''any'' of the items in a target
-set are ''maybe'' within the original set of items (code encoding):
+set are ''maybe'' within the original set of items (pre encoding):
 <pre>
 gcs_match_any(key: [32]byte, compressed_set: []byte, targets [][]byte, 
               fp, N: int) -> bool:
@@ -456,13 +456,13 @@ gcs_match_any(key: [32]byte, compressed_set: []byte, targets [][]byte,
                 false
 
             case last_target_val > last_set_val:
-                // In this case, we'll advance the filter we're quering
+                // In this case, we'll advance the filter we're querying
                 // against. This entails decompressing the next element in the
                 // set.
                 let decoded_value = golomb_decode(stream, fp)
 
                 // Accumulate the decoded delta value to the current value in
-                // order to retreive the current set item.
+                // order to retrieve the current set item.
                 last_set_val += decoded_value
 
     // If we reach this point, the two items in the set matched!
@@ -501,7 +501,7 @@ A <code>Normal</code> filter is intended to contain all the items that a light c
 needs to sync a basic Bitcoin wallet. In order to facilitate this use-case, for
 each transaction, normal filters contain:
 * The outpoints of each input within a transaction.
-* The data-pushes of contained within the public key script of each output within the transaction.
+* The data-pushes contained within the public key script of each output within the transaction.
 
 An <code>Extended</code> filter contains extra data that is meant to facilitate the
 adoption of more advanced smart contracting applications by this BIP. For each
@@ -728,7 +728,7 @@ The <code>getcfheaders</code> message is defined as follows:
 | Type of filter header being requested.
 |}
 
-The <code>BlockLocators</code> within the message are to be intercodeted
+The <code>BlockLocators</code> within the message are to be interpreted
 identically to the <code>BlockLocators</code> within Bitcoin's
 <code>getheaders</code> and <code>getblocks</code> messages.
 
@@ -814,7 +814,7 @@ The <code>cfilter</code> message is defined as follows:
 | The raw compressed compact filter for this block.
 |}
 
-The <code>lockHash</code> field is included in both message as this allows
+The <code>BlockHash</code> field is included in both message as this allows
 easily matching requests against responses, as the responses aren't
 self-identifying like block headers are (via own hash).
 
