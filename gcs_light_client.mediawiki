@@ -838,6 +838,7 @@ compact filter of type <code>0x00</code> and
 <pre>
 N || raw_filter_bytes
 </pre>
+where <code>N</code> is serialized as a 32-bit big-endian integer.
 
 However, there exists a special case of a <code>null</code> filter. This this
 case an empty byte slice is transmitted rather than consuming
