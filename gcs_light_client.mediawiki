@@ -303,10 +303,11 @@ achieve our desired false positive rate.
 The following routine computes the ''uncompressed'' set given the parameters
 above:
 <pre>
-hashed_set_construct(N, P, F, L, k): -> []uint64:
-    let set_items = []
+hashed_set_construct(N, P, raw_items, k): -> []uint64:
+    let F = N * P
 
-    for item in L:
+    let set_items = []
+    for item in raw_items:
         let set_value = siphash(k, item) % F
         set_items.append(set_value)
 
