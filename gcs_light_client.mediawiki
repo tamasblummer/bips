@@ -103,10 +103,10 @@ of items in a repeated series of items. The p2p message extensions in this
 proposal will utilize this variable-length integer encoding in an identical
 manner to the existing Bitcoin p2p messages.
 
-By <code>siphash(k, n)</code> we refer to an invocation of the `SipHash8`
+By <code>siphash(k, n)</code> we refer to an invocation of the <code>SipHash</code>
 pseudo-random function with <code>k</code> as the 128-bit key, and <code>n</code>
 as the input to the PRF. We instantiate with the recommended parameters of
-<code>c = 2</code> and <code>d = 4</code> 
+<code>c = 2</code> and <code>d = 4</code>.
 
 We define the concept of an abstract bit stream instantiated by the function:
 <code>new_bit_stream</code> The <code>bit_stream</code> has two functions that
@@ -848,7 +848,7 @@ However, as the parameter <code>P</code> ''must'' be globally agreed upon (for a
 particular filter type), we define this value ''statically'' for filter types:
 <code>0x00</code> and <code>0x01</code>. For the two aforementioned filter types,
 the false positive rate has been chosen to be: <code>20</code>, meaning the
-parameter <code>P</code> is: <code>2^20</code>.
+parameter <code>P</code> is: <code>2^20</code>, meaning <code>fp=20</code>.
 
 
 === Protocol Version Bump ===
