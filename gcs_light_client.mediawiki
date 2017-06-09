@@ -381,7 +381,7 @@ filter.
 The following routing describes how one queries a compressed set for a ''single''
 item:
 <pre>
-gcs_match(key: [32]byte, compressed_set: []byte, target: []byte, fp, N: int) -> bool:
+gcs_match(key: [16]byte, compressed_set: []byte, target: []byte, fp, N: int) -> bool:
     // First we'll map the item into the domain of our encoding.
     let item = siphash(key, target) % (N * (1 << fp))
 
@@ -421,7 +421,7 @@ items we'd like to query.
 The following routine will evaluate to `true` if ''any'' of the items in a target
 set are ''maybe'' within the original set of items (pre encoding):
 <pre>
-gcs_match_any(key: [32]byte, compressed_set: []byte, targets [][]byte, 
+gcs_match_any(key: [16]byte, compressed_set: []byte, targets [][]byte, 
               fp, N: int) -> bool:
 
     stream = new_bit_stream(compressed_set)
