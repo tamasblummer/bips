@@ -340,11 +340,11 @@ gcs_compress(sorted_set, fp) -> []byte:
     for value in sorted_set:
         // Compute the difference between this value and the last value modulo
         // P.
-        let remainder = (value - last_value) % P
+        let remainder = (value - last_value) & (P - 1)
 
         // Compute the difference between this value and the last one, divided
         // by P. This is our quotient.
-        let quotient = (value - last_value - remainder) / P
+        let quotient = (value - last_value - remainder) >> fp
 
         // Write out the quotient value in unary into the bit stream.
         unary_encode(stream, quotient)
