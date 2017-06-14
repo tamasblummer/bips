@@ -179,13 +179,13 @@ RLE works well when encoding a data stream that has a high degree of redundancy.
 However, in our case due to the hashing of items within the compact filter,
 we'll be dealing with items that are ''uniformly distributed''. We can use this
 fact to leverage a more efficient encoding scheme based on the distribution of
-the length of a run. The [Geometric Distribution](link)
+the length of a run. The [Geometric Distribution](https://en.wikipedia.org/wiki/Geometric_distribution)
 represents the probabilities of a number of failures before the first success
 in a series of Bernoulli trials (yes/no experiments). If our values are i.i.d
 (independent, identically distributed) distributed of the run-length <code>r</code> can be
 represented as [6]:
 <pre>
-P(r = n) = P^n * (1-p)
+P(r = n) = p^n * (1-p)
 </pre>
 Intuitively, this calculates the probability of N zeroes (a run) followed by a
 single 1 (end of a run). Golomb coding takes advantage of this relationship to
@@ -274,7 +274,7 @@ Golomb-Rice coded sets take two parameters:
 Distribution.  Intuitively, to achieve a false positive rate of 1/32 (1/2^5),
 in a series of queries of items which ''aren't'' in the set, we expect to
 receive a "NO" (false) 32 times, before getting a "YES" (true, our false
-positive). Once again, P MUST be a power of two.
+positive). Once again, <code>P</code> MUST be a power of two.
 
 Given these two parameters, we can now construct our set.
 
@@ -830,11 +830,10 @@ self-identifying like block headers are (via own hash).
 
 The parameters <code>N</code> (the number of elements in the filter), and
 <code>P</code> (<code>1 << false_positive_rate</code>) are required by the light
-client in order to properly incrementally decodes, query, and validate
+client in order to properly incrementally decode, query, and validate
 (reconstruct from Bitcoin block) a compact filter. The parameter <code>N</code>
 cannot be known ahead of time, therefore we define the serialization of a
-compact filter of type <code>0x00</code> and
-<code>0x01</code> as:
+compact filter of type <code>0x00</code> and <code>0x01</code> as:
 <pre>
 N || raw_filter_bytes
 </pre>
