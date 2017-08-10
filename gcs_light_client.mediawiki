@@ -653,7 +653,7 @@ filter_header(n: uint) -> [32]byte =
       case None:
           double-sha-256(filter_header(n-1) || double-sha-256(zero_hash))
 
-   where fitler(n) is the filter for block height n
+   where filter(n) is the filter for block height n
 </pre>
 
 The filter header for the genesis block uses the hash of the genesis block
@@ -679,7 +679,7 @@ bandwidth), a light client instead does the following:
 
 <pre>
 verify_from_tip(tip_block_hash: [32]byte):
-    let filter_types = {supported_fitler_types...}
+    let filter_types = {supported_filter_types...}
     let connected_peers = {list_of_connected_full_nodes...}
 
     for filter_type in filter_types:
