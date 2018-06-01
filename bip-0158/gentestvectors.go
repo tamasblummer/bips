@@ -29,12 +29,10 @@ var (
 	// vectors. Any new entries must be added in sorted order.
 	testBlockHeights = []testBlockCase{
 		{0, "Genesis block"},
-		{1, "Extended filter is empty"},
 		{2, ""},
 		{3, ""},
 		{926485, "Duplicate pushdata 913bcc2be49cb534c20474c4dee1e9c4c317e7eb"},
 		{987876, "Coinbase tx has unparseable output script"},
-		{1263442, "Includes witness data"},
 	}
 
 	defaultBtcdDir         = btcutil.AppDataDir("btcd", false)
@@ -181,7 +179,6 @@ func main() {
 
 		// This is the default filter size so we can check against the
 		// server's info
-		fmt.Println(builder.DefaultP)
 		if fp == builder.DefaultP {
 			filter, err := client.GetCFilter(blockHash, wire.GCSFilterRegular)
 			if err != nil {
